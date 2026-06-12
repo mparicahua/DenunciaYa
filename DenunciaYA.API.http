@@ -1,0 +1,143 @@
+@host = http://localhost:5000
+@token = PEGA_TU_TOKEN_JWT_AQUI
+
+### REGISTRO DE CIUDADANO
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "ciudadano@test.com",
+  "password": "Password123!",
+  "nombres": "Juan",
+  "apellidos": "Pérez",
+  "dni": "12345678",
+  "telefono": "999888777"
+}
+
+###
+
+### LOGIN
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "ciudadano@test.com",
+  "password": "Password123!"
+}
+
+###
+
+### CREAR DENUNCIA
+POST {{host}}/api/denuncias
+Content-Type: application/json
+
+{
+  "tipo_delito_id": 1,
+  "ubigeo_id": 1,
+  "direccion_hecho": "Av. Ejemplo 123, Arequipa",
+  "fecha_hecho": "2024-01-15T22:30:00",
+  "descripcion_hecho": "Descripción detallada del hecho ocurrido.",
+  "es_anonima": false,
+  "denunciados": [
+    {
+      "nombres": "Pedro",
+      "apellidos": "López",
+      "dni": "87654321",
+      "relacion_con_denunciante": "desconocido",
+      "descripcion_fisica": "Hombre alto, chompa roja"
+    }
+  ],
+  "testigos": [
+    {
+      "nombre_anonimo": "Vecino anónimo",
+      "declaracion": "Observé que el hecho ocurrió a las 10pm."
+    }
+  ]
+}
+
+###
+
+### CAMBIAR ESTADO DE DENUNCIA
+PUT {{host}}/api/denuncias/1/estado
+Content-Type: application/json
+
+{
+  "nuevo_estado_id": 2,
+  "motivo": "Iniciando evaluación del caso"
+}
+
+###
+
+### ELIMINAR EVIDENCIA
+DELETE {{host}}/api/denuncias/1/evidencias/1
+
+###
+
+### DETALLE DE DENUNCIA POR CÓDIGO
+GET {{host}}/api/denuncias/DEN-2024-00001/detalle
+
+###
+
+### HISTORIAL DE ESTADOS DE DENUNCIA
+GET {{host}}/api/denuncias/1/historial
+
+###
+
+### DENUNCIAS PENDIENTES DE ASIGNACIÓN
+GET {{host}}/api/denuncias/pendientes-asignacion
+
+###
+
+### ASIGNAR DENUNCIA A FUNCIONARIO
+POST {{host}}/api/asignaciones
+Content-Type: application/json
+
+{
+  "denuncia_id": 1,
+  "funcionario_id": 1,
+  "observaciones": "Caso urgente"
+}
+
+###
+
+### DERIVAR DENUNCIA A FISCAL
+POST {{host}}/api/derivaciones
+Content-Type: application/json
+
+{
+  "denuncia_id": 1,
+  "fiscal_id": 1,
+  "motivo": "Competencia fiscal penal"
+}
+
+###
+
+### DENUNCIAS DE UN FUNCIONARIO
+GET {{host}}/api/funcionarios/1/denuncias
+
+###
+
+### REPORTE POR TIPO DE DELITO
+GET {{host}}/api/reportes/denuncias-por-delito
+
+###
+
+### REPORTE POR TIPO DE DELITO (CON FILTROS)
+GET {{host}}/api/reportes/denuncias-por-delito?fecha_inicio=2024-01-01&fecha_fin=2024-12-31&min_denuncias=1
+
+###
+
+### EXPORTAR REPORTE POR DELITO EN CSV
+GET {{host}}/api/reportes/denuncias-por-delito/exportar
+
+###
+
+### REPORTE POR MES
+GET {{host}}/api/reportes/denuncias-por-mes?anio=2024
+
+###
+
+### REPORTE POR ZONA GEOGRÁFICA
+GET {{host}}/api/reportes/denuncias-por-zona?min_denuncias=1
+
+###
