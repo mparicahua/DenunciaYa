@@ -38,6 +38,32 @@ cd DenunciaYA.API
 dotnet run
 ```
 
+## Base de datos (imagen Docker)
+
+En `BaseDatos/denunciaya-db.tar` se incluye una imagen Docker con la base de datos PostgreSQL ya preparada, útil para levantar un entorno local sin depender de Supabase.
+
+### Paso 1 — Cargar la imagen desde el archivo
+
+```bash
+docker load -i BaseDatos/denunciaya-db.tar
+```
+
+### Paso 2 — Levantar un contenedor desde esa imagen
+
+```bash
+docker run -d --name postgres-denunciaya -p 5432:5432 denunciaya-db:v1
+```
+
+### Paso 3 — Apuntar la API a la base de datos local
+
+Configura `ConnectionStrings__PostgreSQL` para que apunte al contenedor:
+
+```
+ConnectionStrings__PostgreSQL=Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=postgres;SSL Mode=Disable
+```
+
+
+
 ## Documentación interactiva
 
 Disponible en: `/scalar`

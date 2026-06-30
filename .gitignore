@@ -51,3 +51,6 @@ Desktop.ini
 .env
 .env.local
 .env.*.local
+
+# Docker DB image (too large for GitHub, distribuir aparte)
+BaseDatos/*.tar
