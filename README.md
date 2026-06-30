@@ -71,6 +71,15 @@ Disponible en: `/scalar`
 |---|---|---|
 | GET | `/api/funcionarios/{id}/denuncias` | Denuncias activas de un funcionario |
 
+### Personas
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST | `/api/personas` | Registrar persona |
+| GET | `/api/personas` | Listar personas |
+| GET | `/api/personas/{id}` | Obtener persona por id |
+| PUT | `/api/personas/{id}` | Editar persona |
+| DELETE | `/api/personas/{id}` | Eliminar persona |
+
 ### Reportes
 | Método | Ruta | Descripción |
 |---|---|---|

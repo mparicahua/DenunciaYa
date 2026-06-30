@@ -1,5 +1,7 @@
+using System.Text.Json;
 using DenunciaYA.API.DTOs;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace DenunciaYA.API.Services;
 
@@ -45,9 +47,9 @@ public class DenunciaService(IConfiguration config)
             int denunciaId;
             await using (var cmd = new NpgsqlCommand(
                 @"INSERT INTO denuncias (codigo_seguimiento, denunciante_id, tipo_delito_id, estado_id,
-                  ubigeo_id, direccion_hecho, fecha_hecho, descripcion_hecho, es_anonima, created_at, updated_at)
+                  ubigeo_id, direccion_hecho, fecha_hecho, descripcion_hecho, es_anonima, created_at, updated_at, detalles_especificos)
                   VALUES (@cod, @denunciante_id, @tipo_delito_id, @estado_id,
-                  @ubigeo_id, @direccion_hecho, @fecha_hecho, @descripcion_hecho, @es_anonima, NOW(), NOW())
+                  @ubigeo_id, @direccion_hecho, @fecha_hecho, @descripcion_hecho, @es_anonima, NOW(), NOW(), @detalles_especificos)
                   RETURNING id", conn, tx))
             {
                 cmd.Parameters.AddWithValue("cod", codigoSeguimiento);
@@ -59,6 +61,10 @@ public class DenunciaService(IConfiguration config)
                 cmd.Parameters.AddWithValue("fecha_hecho", (object?)req.FechaHecho ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("descripcion_hecho", req.DescripcionHecho);
                 cmd.Parameters.AddWithValue("es_anonima", req.EsAnonima);
+                cmd.Parameters.Add(new NpgsqlParameter("detalles_especificos", NpgsqlDbType.Jsonb)
+                {
+                    Value = req.DetallesEspecificos.HasValue ? req.DetallesEspecificos.Value.GetRawText() : DBNull.Value
+                });
                 denunciaId = (int)(await cmd.ExecuteScalarAsync())!;
             }
 
@@ -266,7 +272,8 @@ public class DenunciaService(IConfiguration config)
                      td.nombre AS tipo_delito, cd.nombre AS categoria_delito,
                      ed.nombre AS estado_actual,
                      CASE WHEN d.es_anonima = true THEN 'ANÓNIMO' ELSE p.nombres || ' ' || p.apellidos END AS nombre_denunciante,
-                     df.nombre AS distrito_fiscal
+                     df.nombre AS distrito_fiscal,
+                     d.detalles_especificos
               FROM denuncias d
               INNER JOIN tipos_delito td       ON td.id = d.tipo_delito_id
               INNER JOIN categorias_delito cd  ON cd.id = td.categoria_id
@@ -289,7 +296,8 @@ public class DenunciaService(IConfiguration config)
             CategoriaDelito = reader.GetString(4),
             EstadoActual = reader.GetString(5),
             NombreDenunciante = reader.GetString(6),
-            DistritoFiscal = reader.IsDBNull(7) ? null : reader.GetString(7)
+            DistritoFiscal = reader.IsDBNull(7) ? null : reader.GetString(7),
+            DetallesEspecificos = reader.IsDBNull(8) ? null : JsonDocument.Parse(reader.GetString(8)).RootElement
         };
     }
 

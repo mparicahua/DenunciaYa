@@ -46,6 +46,7 @@ builder.Services.AddScoped<DenunciaService>();
 builder.Services.AddScoped<AsignacionService>();
 builder.Services.AddScoped<DerivacionService>();
 builder.Services.AddScoped<ReporteService>();
+builder.Services.AddScoped<PersonaService>();
 
 var app = builder.Build();
 

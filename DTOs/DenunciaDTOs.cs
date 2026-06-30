@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace DenunciaYA.API.DTOs;
 
 public class CreateDenunciaRequest
@@ -10,6 +12,9 @@ public class CreateDenunciaRequest
     public bool EsAnonima { get; set; }
     public List<DenunciadoRequest> Denunciados { get; set; } = [];
     public List<TestigoRequest> Testigos { get; set; } = [];
+
+    // Datos propios del tipo de delito (ej. monto_estimado, placa_vehiculo, relacion_agresor).
+    public JsonElement? DetallesEspecificos { get; set; }
 }
 
 public class DenunciadoRequest
@@ -50,6 +55,7 @@ public class DenunciaDetalleResponse
     public string EstadoActual { get; set; } = string.Empty;
     public string NombreDenunciante { get; set; } = string.Empty;
     public string? DistritoFiscal { get; set; }
+    public JsonElement? DetallesEspecificos { get; set; }
 }
 
 public class DenunciaPendienteResponse
