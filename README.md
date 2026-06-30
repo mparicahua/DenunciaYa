@@ -2,6 +2,14 @@
 
 Sistema de denuncias penales.
 
+# Participantes:
+
+Nombre: Mharco Paricahua (mparicahua)</br>
+Nombre: Paolo Lovon (Lov-Oro)</br>
+Nombre: Fernando Flores (Farox17)</br>
+Nombre: Arturo Benavente (Wirkuf)
+
+
 ## Descripción
 
 API REST para gestión de denuncias penales que permite registro de ciudadanos, creación de denuncias, asignación a funcionarios, derivación a fiscales y generación de reportes estadísticos.
