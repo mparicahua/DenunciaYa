@@ -141,3 +141,52 @@ GET {{host}}/api/reportes/denuncias-por-mes?anio=2024
 GET {{host}}/api/reportes/denuncias-por-zona?min_denuncias=1
 
 ###
+
+### CREAR PERSONA (usar sufijo "-prueba" en el nombre para pruebas manuales)
+POST {{host}}/api/personas
+Content-Type: application/json
+
+{
+  "nombres": "Carlos -prueba",
+  "apellidos": "Gomez -prueba",
+  "dni": "99000001",
+  "fechaNacimiento": "1990-05-10",
+  "genero": "M",
+  "telefono": "999111222",
+  "emailContacto": "carlos.prueba@test.com",
+  "direccion": "Calle Falsa 123"
+}
+
+###
+
+### LISTAR PERSONAS
+GET {{host}}/api/personas
+
+###
+
+### OBTENER PERSONA POR ID
+GET {{host}}/api/personas/1
+
+###
+
+### EDITAR PERSONA
+PUT {{host}}/api/personas/1
+Content-Type: application/json
+
+{
+  "nombres": "Carlos Editado -prueba",
+  "apellidos": "Gomez -prueba",
+  "dni": "99000001",
+  "fechaNacimiento": "1990-05-10",
+  "genero": "M",
+  "telefono": "999999999",
+  "emailContacto": "carlos.editado.prueba@test.com",
+  "direccion": "Calle Nueva 456"
+}
+
+###
+
+### ELIMINAR PERSONA
+DELETE {{host}}/api/personas/1
+
+###

@@ -1,4 +1,5 @@
 using System.Text;
+using DenunciaYA.API.Middleware;
 using DenunciaYA.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
@@ -47,6 +48,7 @@ builder.Services.AddScoped<AsignacionService>();
 builder.Services.AddScoped<DerivacionService>();
 builder.Services.AddScoped<ReporteService>();
 builder.Services.AddScoped<PersonaService>();
+builder.Services.AddSingleton<MongoLogService>();
 
 var app = builder.Build();
 
@@ -57,6 +59,7 @@ app.MapScalarApiReference(options =>
     options.Theme = ScalarTheme.BluePlanet;
 });
 
+app.UseMiddleware<ApiLoggingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseRateLimiter();
